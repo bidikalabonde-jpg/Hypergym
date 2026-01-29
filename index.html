@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HYPER GYM — Treinos, Dieta e Suplementos</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+<header>
+  <div class="container">
+    <div class="topbar">
+      <div class="brand" aria-label="HYPER GYM">
+        <div class="brand-badge" aria-hidden="true"></div>
+        HYPER <span>GYM</span>
+      </div>
+
+      <nav class="nav" aria-label="Navegação">
+        <a href="#treinos">Treinos</a>
+        <a href="#dieta">Dieta</a>
+        <a href="#modelos">Modelos</a>
+        <a href="#suplementos">Suplementos</a>
+        <button type="button" onclick="modalComprar()" style="background:rgba(34,197,94,.2); border-color:rgba(34,197,94,.4); color:#BBF7D0;">Comprar site</button>
+        <button id="btnLogin" type="button" onclick="modalLogin()">Login</button>
+        <a class="cta" href="#dieta">Calcular macros</a>
+      </nav>
+
+      <button class="mobile-menu-btn" type="button" onclick="toggleMobileMenu()">Menu</button>
+    </div>
+
+    <div id="mobileDrawer" class="mobile-drawer" aria-label="Menu mobile">
+      <a href="#treinos" onclick="toggleMobileMenu(false)">Treinos</a>
+      <a href="#dieta" onclick="toggleMobileMenu(false)">Dieta</a>
+      <a href="#modelos" onclick="toggleMobileMenu(false)">Modelos</a>
+      <a href="#suplementos" onclick="toggleMobileMenu(false)">Suplementos</a>
+      <button type="button" onclick="modalComprar(); toggleMobileMenu(false)">Comprar site</button>
+      <button type="button" onclick="modalLogin(); toggleMobileMenu(false)">Login</button>
+      <a href="#dieta" onclick="toggleMobileMenu(false)">Calcular macros</a>
+    </div>
+  </div>
+</header>
+
+<div class="container hero">
+  <div class="hero-grid">
+    <div class="hero-card">
+      <h1>HYPER <span>GYM</span> — treinos, dieta e suplementos completos</h1>
+      <p>
+        Biblioteca organizada de treinos (iniciante ao avançado), calculadora de macros com vários
+        tipos de dieta e um guia completo com os principais suplementos usados na musculação.
+      </p>
+
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#treinos">Escolher treino agora</a>
+        <a class="btn btn-ghost" href="#dieta">Calcular dieta</a>
+      </div>
+
+      <div class="quick-chooser">
+        <div class="quick-chooser-title">Atalho rápido: o HYPER GYM sugere um treino para você</div>
+        <div class="quick-row">
+          <select id="quickObj">
+            <option value="massa">Ganho de massa</option>
+            <option value="emagrecer">Emagrecer</option>
+            <option value="definir">Definição</option>
+            <option value="perna">Foco pernas/glúteo</option>
+            <option value="forca">Foco força</option>
+          </select>
+          <select id="quickNivel">
+            <option value="iniciante">Iniciante</option>
+            <option value="intermediario" selected>Intermediário</option>
+            <option value="avancado">Avançado</option>
+          </select>
+          <button class="btn btn-primary" type="button" onclick="sugerirTreino()">Sugerir treino</button>
+        </div>
+      </div>
+
+      <div class="pill-row">
+        <div class="pill">Treinos organizados (15+)</div>
+        <div class="pill">Sem "Weke Weke"</div>
+        <div class="pill">15+ tipos de dieta</div>
+        <div class="pill">Macros + cardápio exemplo</div>
+        <div class="pill">Guia amplo de suplementos</div>
+      </div>
+    </div>
+
+    <div class="hero-card">
+      <h3 style="margin-bottom:6px;">Resumo diário HYPER GYM</h3>
+      <div class="sub">Seu painel rápido de treino e dieta.</div>
+      <div class="divider"></div>
+
+      <div class="stats">
+        <div class="stat">
+          <strong id="statTreino">—</strong>
+          <small>Treino principal</small>
+        </div>
+        <div class="stat">
+          <strong id="statKcal">—</strong>
+          <small>Calorias alvo</small>
+        </div>
+        <div class="stat">
+          <strong id="statMacros">—</strong>
+          <small>Macros (P/C/G)</small>
+        </div>
+        <div class="stat">
+          <strong id="statPref">—</strong>
+          <small>Preferência alimentar</small>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="callout">
+        Conteúdo educativo. Se você tem lesão, dor crônica, condição clínica ou usa medicação,
+        ajuste treino e dieta com profissional.
+      </div>
+    </div>
+  </div>
+</div>
+
+<main class="container">
+  <section id="treinos">
+    <div class="section-title">
+      <div>
+        <h2>Treinos HYPER GYM (clique para ver)</h2>
+        <p>
+          Selecione um treino para abrir divisão semanal, exercícios, repetições, descanso e observações.
+          Os treinos estão pensados para serem "base", e você pode ajustar com seu professor.
+        </p>
+      </div>
+      <div class="row">
+        <span class="kbd">Use busca e filtros</span>
+      </div>
+    </div>
+
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>Lista de treinos</h3>
+        <div class="sub">Iniciante, intermediário e avançado (sem Weke Weke).</div>
+
+        <div class="field">
+          <label for="treinoBusca">Buscar treino</label>
+          <input id="treinoBusca" type="text" placeholder="Ex.: PPL, GVT, Arnold, perna, força..." oninput="renderTreinosList()"/>
+        </div>
+
+        <div class="field">
+          <label for="treinoFiltro">Filtrar por</label>
+          <select id="treinoFiltro" onchange="renderTreinosList()">
+            <option value="todos">Todos</option>
+            <option value="iniciante">Iniciante</option>
+            <option value="intermediario">Intermediário</option>
+            <option value="avancado">Avançado</option>
+            <option value="pernas">Ênfase pernas/glúteo</option>
+            <option value="hipertrofia">Hipertrofia</option>
+            <option value="forca">Força</option>
+            <option value="volume">Volume alto</option>
+            <option value="pump">Pump/metabólico</option>
+          </select>
+        </div>
+
+        <div id="treinosList" class="list" aria-label="Lista de treinos"></div>
+
+        <div class="divider"></div>
+        <div class="hint">
+          Dica de consistência: faça 8–12 semanas com o mesmo "estilo" de divisão,
+          ajustando cargas e execuções; depois mude (ou faça uma semana de deload).
+        </div>
+      </div>
+
+      <div class="card detail">
+        <h3>Detalhes do treino</h3>
+        <div class="sub" id="treinoSub">Selecione um treino na lista ao lado.</div>
+
+        <div class="chips" id="treinoChips"></div>
+
+        <div class="divider"></div>
+
+        <pre id="treinoDetalhe" aria-label="Detalhes do treino"></pre>
+
+        <div class="divider"></div>
+
+        <div class="row">
+          <button class="btn btn-primary" type="button" onclick="salvarTreinoSelecionado()">Salvar como treino principal</button>
+          <button class="btn" type="button" onclick="copiarTreino()">Copiar treino</button>
+          <button class="btn btn-ghost" type="button" onclick="imprimirTreino()">🖨️ Imprimir treino</button>
+        </div>
+
+        <div style="margin-top:10px;" class="hint">
+          "Salvar como principal" atualiza o resumo lá no topo e salva no seu navegador (localStorage).
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="dieta">
+    <div class="section-title">
+      <div>
+        <h2>Dieta — calculadora de macros + cardápio exemplo</h2>
+        <p>
+          Preencha seus dados, escolha objetivo e preferência alimentar. O sistema estima calorias, macros
+          e gera um modelo de cardápio por refeições para você adaptar.
+        </p>
+      </div>
+    </div>
+
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>Calculadora de calorias e macros</h3>
+        <div class="sub">Estimativa por Mifflin-St Jeor + fator de atividade.</div>
+
+        <div class="grid grid-2">
+          <div class="field">
+            <label for="sexo">Sexo</label>
+            <select id="sexo">
+              <option value="masc" selected>Masculino</option>
+              <option value="fem">Feminino</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="idade">Idade</label>
+            <input id="idade" type="number" min="10" max="90" placeholder="Ex.: 24"/>
+          </div>
+        </div>
+
+        <div class="grid grid-2">
+          <div class="field">
+            <label for="altura">Altura (cm)</label>
+            <input id="altura" type="number" min="120" max="230" placeholder="Ex.: 175"/>
+          </div>
+          <div class="field">
+            <label for="peso">Peso (kg)</label>
+            <input id="peso" type="number" min="30" max="250" step="0.1" placeholder="Ex.: 78.5"/>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="atividade">Nível de atividade</label>
+          <select id="atividade">
+            <option value="1.2">Sedentário (pouco movimento)</option>
+            <option value="1.375">Leve (treina 1–3x/sem)</option>
+            <option value="1.55" selected>Moderado (treina 3–5x/sem)</option>
+            <option value="1.725">Alto (treina 5–6x/sem)</option>
+            <option value="1.9">Muito alto (atleta/2x ao dia)</option>
+          </select>
+        </div>
+
+        <div class="grid grid-2">
+          <div class="field">
+            <label for="objetivoDieta">Objetivo</label>
+            <select id="objetivoDieta">
+              <option value="cut">Emagrecer (déficit ~20%)</option>
+              <option value="recomp">Recomposição (déficit leve ~10%)</option>
+              <option value="manter" selected>Manter</option>
+              <option value="bulk">Ganho de massa (superávit ~10%)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="preferencia">Preferência / tipo de dieta</label>
+            <select id="preferencia">
+              <option value="equilibrada" selected>Equilibrada (padrão)</option>
+              <option value="bulk_limpo">Bulk limpo</option>
+              <option value="cut_alta_proteina">Cut alta proteína</option>
+              <option value="lowcarb">Low Carb</option>
+              <option value="cetogenica">Cetogênica (keto)</option>
+              <option value="jejum">Jejum intermitente</option>
+              <option value="carb_cycling">Carb Cycling</option>
+              <option value="mediterranea">Mediterrânea</option>
+              <option value="dash">DASH (pressão/saúde)</option>
+              <option value="paleo">Paleo</option>
+              <option value="vegetariano">Vegetariana</option>
+              <option value="vegano">Vegana</option>
+              <option value="sem_lactose">Sem lactose</option>
+              <option value="sem_gluten">Sem glúten</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-2">
+          <div class="field">
+            <label for="refeicoesDia">Refeições por dia</label>
+            <select id="refeicoesDia">
+              <option value="2">2 (padrão jejum)</option>
+              <option value="3">3</option>
+              <option value="4" selected>4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="perfilProteina">Proteína (g/kg)</label>
+            <select id="perfilProteina">
+              <option value="1.6">1.6 (mínimo bom)</option>
+              <option value="1.8" selected>1.8 (padrão hipertrofia)</option>
+              <option value="2.0">2.0 (alto)</option>
+              <option value="2.2">2.2 (muito alto)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="obsDieta">Observações (opcional)</label>
+          <textarea id="obsDieta" placeholder="Ex.: não como peixe, treino 19h, muita fome à noite, etc."></textarea>
+        </div>
+
+        <div class="row">
+          <button class="btn btn-primary" type="button" onclick="calcularMacros()">Calcular</button>
+          <button class="btn" type="button" onclick="gerarCardapio()">Gerar cardápio exemplo</button>
+        </div>
+
+        <div class="divider"></div>
+        <div class="callout">
+          Ajuste fino: se em 10–14 dias o peso não mexe, ajuste 150–250 kcal/dia e reavalie.
+          Em treino pesado, foque primeiro em aderência (sono + proteína + calorias).
+        </div>
+      </div>
+
+      <div class="card detail">
+        <h3>Seu plano de dieta</h3>
+        <div class="sub">Resumo + modelo de cardápio (para você adaptar).</div>
+
+        <div class="divider"></div>
+
+        <div class="goodbox">
+          <div><strong>Calorias alvo:</strong> <span id="outKcal">—</span></div>
+          <div><strong>Macros:</strong> <span id="outMacros">—</span></div>
+          <div class="hint" style="margin-top:6px;">
+            Prioridade: bater proteína e calorias. Carbo e gordura você ajusta pela preferência e desempenho.
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <pre id="outCardapio">Clique em "Gerar cardápio exemplo".</pre>
+
+        <div class="row">
+          <button class="btn" type="button" onclick="copiarDieta()">Copiar dieta</button>
+          <button class="btn btn-primary" type="button" onclick="salvarDieta()">Salvar no resumo</button>
+          <button class="btn btn-ghost" type="button" onclick="imprimirDieta()">🖨️ Imprimir dieta</button>
+        </div>
+
+        <div style="margin-top:10px;" class="hint">
+          Isso é um "rascunho inteligente". O melhor é levar para o nutricionista e ajustar com sua rotina e exames.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="modelos">
+    <div class="section-title">
+      <div>
+        <h2>Modelos de dieta (biblioteca) — clique para ver</h2>
+        <p>
+          Aqui você tem explicação rápida de cada tipo de dieta, quando faz sentido e um exemplo de como organizar.
+        </p>
+      </div>
+      <div class="row">
+        <span class="kbd">Busca + filtros</span>
+      </div>
+    </div>
+
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>Lista de dietas</h3>
+        <div class="sub">Mais de 14 modelos, do bulk ao cutting e restrições.</div>
+
+        <div class="field">
+          <label for="dietaBusca">Buscar dieta</label>
+          <input id="dietaBusca" type="text" placeholder="Ex.: keto, low carb, mediterrânea, vegana..." oninput="renderDietasList()"/>
+        </div>
+
+        <div class="field">
+          <label for="dietaFiltro">Filtrar por</label>
+          <select id="dietaFiltro" onchange="renderDietasList()">
+            <option value="todas">Todas</option>
+            <option value="bulk">Ganho de massa</option>
+            <option value="cut">Emagrecimento/definição</option>
+            <option value="saude">Saúde</option>
+            <option value="restricao">Restrição alimentar</option>
+            <option value="estrategia">Estratégia (jejum/cycling)</option>
+          </select>
+        </div>
+
+        <div id="dietasList" class="list" aria-label="Lista de dietas"></div>
+
+        <div class="divider"></div>
+        <div class="hint">
+          Não existe dieta "mágica". A melhor é a que você consegue seguir por meses, com boa proteína e calorias bem controladas.
+        </div>
+      </div>
+
+      <div class="card detail">
+        <h3>Detalhes da dieta</h3>
+        <div class="sub" id="dietaSub">Selecione um modelo na lista ao lado.</div>
+
+        <div class="chips" id="dietaChips"></div>
+
+        <div class="divider"></div>
+
+        <pre id="dietaDetalhe" aria-label="Detalhes da dieta"></pre>
+
+        <div class="divider"></div>
+
+        <div class="row">
+          <button class="btn" type="button" onclick="copiarModeloDieta()">Copiar modelo</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="suplementos">
+    <div class="section-title">
+      <div>
+        <h2>Guia completo de suplementos (principais)</h2>
+        <p>
+          O que funciona melhor (creatina, proteína, cafeína...), o que depende do contexto e o que é mais marketing.
+          Leia também as cautelas de saúde e exames.
+        </p>
+      </div>
+    </div>
+
+    <div class="supp-grid" id="suppGrid"></div>
+
+    <div class="divider"></div>
+
+    <div class="card">
+      <h3>Lojas de suplementos (exemplo)</h3>
+      <div class="sub">Você pode trocar pelos seus links/afiliados depois.</div>
+      <div class="divider"></div>
+      <div id="stores" class="store-grid" aria-label="Lojas de suplementos"></div>
+      <div class="divider"></div>
+      <div class="hint">
+        Dica: sempre priorize procedência (evitar falsificação), lote e nota fiscal.
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div>© <span id="ano"></span> HYPER GYM — Treinos, Dieta e Suplementos.</div>
+      <div style="margin-top:8px;">
+        Conteúdo educativo. Para lesões/doenças/gestação/medicações, procure profissionais.
+      </div>
+    </div>
+  </footer>
+</main>
+
+<!-- Modal Login -->
+<div id="modalLogin" class="modal-overlay">
+  <div class="modal">
+    <span class="modal-close" onclick="closeModal('modalLogin')">&times;</span>
+    <h3>Login / Cadastro</h3>
+    <div class="sub">Sistema simulado (salva no navegador).</div>
+    <div class="divider"></div>
+
+    <div class="field">
+      <label for="loginEmail">E-mail</label>
+      <input id="loginEmail" type="email" placeholder="seu@email.com"/>
+    </div>
+    <div class="field">
+      <label for="loginSenha">Senha</label>
+      <input id="loginSenha" type="password" placeholder="Senha"/>
+    </div>
+
+    <div class="row">
+      <button class="btn btn-primary" type="button" onclick="fazerLogin()">Entrar</button>
+      <button class="btn" type="button" onclick="fazerCadastro()">Cadastrar</button>
+    </div>
+
+    <div class="divider"></div>
+    <div class="hint">
+      Sistema de exemplo. Em produção, conecte a um backend real.
+    </div>
+  </div>
+</div>
+
+<!-- Modal Comprar -->
+<div id="modalComprar" class="modal-overlay">
+  <div class="modal">
+    <span class="modal-close" onclick="closeModal('modalComprar')">&times;</span>
+    <h3>Comprar este site (HYPER GYM)</h3>
+    <div class="sub">Você leva código completo, treinos, dieta, suplementos e calculadora.</div>
+
+    <div class="price-box">
+      <div class="old">De: R$ 997,00</div>
+      <span class="new">R$ 497</span>
+      <div class="desc">Pagamento único • Sem mensalidade</div>
+    </div>
+
+    <div class="goodbox">
+      <strong>O que você recebe:</strong>
+      <ul style="list-style:none; margin-top:6px;">
+        <li>✔ Código HTML/CSS/JS completo (4 arquivos)</li>
+        <li>✔ 15+ treinos organizados (iniciante ao avançado)</li>
+        <li>✔ Calculadora de macros (14+ tipos de dieta)</li>
+        <li>✔ Guia completo de suplementos (30+)</li>
+        <li>✔ Sistema de login/cadastro (simulado)</li>
+        <li>✔ Funções imprimir (treino/dieta)</li>
+        <li>✔ Design premium (roxo/dark)</li>
+      </ul>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label for="compraEmail">Seu e-mail (para envio)</label>
+      <input id="compraEmail" type="email" placeholder="seu@email.com"/>
+    </div>
+
+    <div class="field">
+      <label for="compraNome">Nome completo</label>
+      <input id="compraNome" type="text" placeholder="João Silva"/>
+    </div>
+
+    <div class="field">
+      <label>Forma de pagamento</label>
+      <select id="compraPagamento">
+        <option value="pix">PIX (aprovação instantânea)</option>
+        <option value="cartao">Cartão de crédito</option>
+      </select>
+    </div>
+
+    <div class="row">
+      <button class="btn btn-primary" type="button" onclick="finalizarCompra()">Finalizar compra (R$ 497)</button>
+    </div>
+
+    <div class="divider"></div>
+    <div class="hint">
+      Ao clicar, você será redirecionado para página de pagamento (simulação).
+      Em produção real, integre Stripe, Mercado Pago, PagSeguro, etc.
+    </div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
